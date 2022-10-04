@@ -26,37 +26,59 @@ namespace DifferenceTwoList
             secondCollection.Add(new DataItem() { Id = new Guid("{006DED8D-266E-4F55-BA7B-3CD0E1502CF5}"), Data = "Pferd", Value = "0" });
             secondCollection.Add(new DataItem() { Id = new Guid("{283EFD5E-059D-48EA-821C-A290A2739CEF}"), Data = "Hund", Value = "2" });
             secondCollection.Add(new DataItem() { Id = new Guid("{D5471D9F-C767-4EC8-A31D-ABFB07D65EA3}"), Data = "Maus", Value = "4" });
-            secondCollection.Add(new DataItem() {Id = new Guid("{8CC57D56-5210-4A4E-B514-045FA0969A97}"), Data = "Esel", Value = "9" });
-            secondCollection.Add(new DataItem() {Id = new Guid("{E4AEA1FB-DE37-448A-9E5F-8591D1B3D175}"), Data = "Bär", Value = "3" });
+            secondCollection.Add(new DataItem() { Id = new Guid("{8CC57D56-5210-4A4E-B514-045FA0969A97}"), Data = "Esel", Value = "9" });
+            secondCollection.Add(new DataItem() { Id = new Guid("{E4AEA1FB-DE37-448A-9E5F-8591D1B3D175}"), Data = "Bär", Value = "3" });
 
             List<DiffItem> diffList = GetDifferenceResult(mainCollection, secondCollection);
         }
 
-        private static List<DiffItem> GetDifferenceResult(IEnumerable<DataItem> preList, IEnumerable<DataItem> postList)
+        private static List<DiffItem> GetDifferenceResult(IEnumerable<DataItem> mainCollection, IEnumerable<DataItem> secondCollection)
         {
+            if (mainCollection == null)
+            {
+                throw new NullReferenceException($"Die Collection '{nameof(mainCollection)}' darf nicht null sein.");
+            }
+
             List<DiffItem>  resultCollection = new List<DiffItem>();
 
-            IEnumerable<DataItem> preOnly = preList.Except(postList, new DataItemComparer());
-            IEnumerable<DataItem> postOnly = postList.Except(preList, new DataItemComparer());
-            IEnumerable<DataItem> common = postList.Intersect(preList, new DataItemComparer());
+            if (secondCollection == null || secondCollection.Count() == 0)
+            {
+                if (mainCollection != null || mainCollection.Count() != 0)
+                {
+                    foreach (DataItem addItem in mainCollection)
+                    {
+                        resultCollection.Add(new DiffItem(addItem.Id, addItem.Fullname, DiffType.Add));
+                    }
 
-            IEnumerable<DataItem> added = postOnly.Except(preOnly, new DataItemDataComparer());
-            IEnumerable<DataItem> removed = preOnly.Except(postOnly, new DataItemDataComparer());
-            IEnumerable<DataItem> diffPre = preOnly.Intersect(postOnly, new DataItemDataComparer());
-            IEnumerable<DataItem> diffPost = postOnly.Intersect(preOnly, new DataItemDataComparer());
+                    return resultCollection;
+                }
+                else
+                {
+                    return resultCollection;
+                }
+            }
 
-            foreach (DataItem add in added)
+            IEnumerable<DataItem> mainCollectionOnly = mainCollection.Except(secondCollection, new DataItemComparer<DataItem>());
+            IEnumerable<DataItem> secondCollectionOnly = secondCollection.Except(mainCollection, new DataItemComparer<DataItem>());
+            IEnumerable<DataItem> common = secondCollection.Intersect(mainCollection, new DataItemComparer<DataItem>());
+
+            IEnumerable<DataItem> addedItems = secondCollectionOnly.Except(mainCollectionOnly, new DataItemDataComparer<DataItem>());
+            IEnumerable<DataItem> removedItems = mainCollectionOnly.Except(secondCollectionOnly, new DataItemDataComparer<DataItem>());
+            IEnumerable<DataItem> diffMain = mainCollectionOnly.Intersect(secondCollectionOnly, new DataItemDataComparer<DataItem>());
+            IEnumerable<DataItem> diffSecond = secondCollectionOnly.Intersect(mainCollectionOnly, new DataItemDataComparer<DataItem>());
+
+            foreach (DataItem add in addedItems)
             {
-                resultCollection.Add(new DiffItem(add.Id, add.Data, DiffType.Add, null, add.Value));
+                resultCollection.Add(new DiffItem(add.Id, add.Data, DiffType.Add));
             }
-            foreach (DataItem rem in removed)
+            foreach (DataItem rem in removedItems)
             {
-                resultCollection.Add(new DiffItem(rem.Id, rem.Data, DiffType.Remove, rem.Value, null));
+                resultCollection.Add(new DiffItem(rem.Id, rem.Data, DiffType.Remove));
             }
-            foreach (DataItem pre in diffPre)
+            foreach (DataItem pre in diffMain)
             {
-                DataItem post = diffPost.First(x => x.Data == pre.Data);
-                resultCollection.Add(new DiffItem(pre.Id, pre.Data, DiffType.Diff, pre.Value, post.Value));
+                DataItem post = diffSecond.First(x => x.Id == pre.Id);
+                resultCollection.Add(new DiffItem(pre.Id, pre.Data, DiffType.Diff));
             }
 
             return resultCollection;
@@ -123,13 +145,11 @@ namespace DifferenceTwoList
     {
         public DiffItem() { }
 
-        public DiffItem(Guid id, string data, DiffType type, string pre, string post)
+        public DiffItem(Guid id, string fullname, DiffType type)
         {
             this.Id = id;
-            this.Data = data;
+            this.Data = fullname;
             this.DiffType = type;
-            this.PreVal = pre;
-            this.PostVal = post; 
         }
 
         public Guid Id { get; private set; }
@@ -137,35 +157,31 @@ namespace DifferenceTwoList
         public string Data { get; set; }
 
         public DiffType DiffType { get; set; } // DiffType = Add/Remove/Diff
-
-        public string PreVal { get; set; } // preList value corresponding to Data item
-
-        public string PostVal { get; set; } // postList value corresponding to Data item
     }
 
-    public class DataItemComparer : IEqualityComparer<DataItem>
+    public class DataItemComparer<TCollection> : IEqualityComparer<TCollection>
     {
-        public bool Equals(DataItem x, DataItem y)
+        public bool Equals(TCollection x, TCollection y)
         {
-            return (string.Equals(x.Hash, y.Hash));
+            return (string.Equals(((ISyncItem)x).Hash, ((ISyncItem)y).Hash));
         }
 
-        public int GetHashCode(DataItem obj)
+        public int GetHashCode(TCollection obj)
         {
-            return obj.Id.GetHashCode();
+            return ((ISyncItem)obj).Id.GetHashCode();
         }
     }
 
-    public class DataItemDataComparer : IEqualityComparer<DataItem>
+    public class DataItemDataComparer<TCollection> : IEqualityComparer<TCollection>
     {
-        public bool Equals(DataItem x, DataItem y)
+        public bool Equals(TCollection x, TCollection y)
         {
-            return string.Equals(x.Id, y.Id);
+            return string.Equals(((ISyncItem)x).Id, ((ISyncItem)y).Id);
         }
 
-        public int GetHashCode(DataItem obj)
+        public int GetHashCode(TCollection obj)
         {
-            return obj.Id.GetHashCode();
+            return ((ISyncItem)obj).Id.GetHashCode();
         }
     }
 
