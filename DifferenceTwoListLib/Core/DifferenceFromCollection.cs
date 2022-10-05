@@ -62,7 +62,7 @@ namespace DifferenceTwoListLib
             foreach (TCollection pre in diffMain)
             {
                 TCollection post = diffSecond.First(x => ((ISyncItem)x).Id == ((ISyncItem)pre).Id);
-                resultCollection.Add(new DifferenceResultItem(((ISyncItem)pre).Id, ((ISyncItem)pre).Fullname, DifferenceItemType.Diff));
+                resultCollection.Add(new DifferenceResultItem(((ISyncItem)pre).Id, ((ISyncItem)pre).Fullname, DifferenceItemType.Change));
             }
 
             return resultCollection;

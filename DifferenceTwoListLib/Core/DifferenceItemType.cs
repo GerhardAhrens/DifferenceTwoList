@@ -4,6 +4,6 @@
     {
         Add,
         Remove,
-        Diff
+        Change
     }
 }

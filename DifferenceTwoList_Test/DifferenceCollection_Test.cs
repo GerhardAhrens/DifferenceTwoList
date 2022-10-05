@@ -86,7 +86,7 @@ namespace DifferenceTwoList_Test
             Assert.IsTrue(diffCollection.Count() == 5);
             Assert.IsTrue(diffCollection.Count(c => c.DiffType == DifferenceItemType.Add) == 1);
             Assert.IsTrue(diffCollection.Count(c => c.DiffType == DifferenceItemType.Remove) == 2);
-            Assert.IsTrue(diffCollection.Count(c => c.DiffType == DifferenceItemType.Diff) == 2);
+            Assert.IsTrue(diffCollection.Count(c => c.DiffType == DifferenceItemType.Change) == 2);
         }
 
         [DataRow("", "")]
