@@ -29,10 +29,10 @@ namespace DifferenceTwoList
             secondCollection.Add(new DataItem() { Id = new Guid("{8CC57D56-5210-4A4E-B514-045FA0969A97}"), Data = "Esel", Value = "9" });
             secondCollection.Add(new DataItem() { Id = new Guid("{E4AEA1FB-DE37-448A-9E5F-8591D1B3D175}"), Data = "Bär", Value = "3" });
 
-            List<DiffItem> diffList = GetDifferenceResult(mainCollection, secondCollection);
+            List<DiffItem> diffList = GetDifferenceResult<DataItem>(mainCollection, secondCollection);
         }
 
-        private static List<DiffItem> GetDifferenceResult(IEnumerable<DataItem> mainCollection, IEnumerable<DataItem> secondCollection)
+        private static List<DiffItem> GetDifferenceResult<TCollection>(IEnumerable<TCollection> mainCollection, IEnumerable<TCollection> secondCollection)
         {
             if (mainCollection == null)
             {
@@ -45,9 +45,9 @@ namespace DifferenceTwoList
             {
                 if (mainCollection != null || mainCollection.Count() != 0)
                 {
-                    foreach (DataItem addItem in mainCollection)
+                    foreach (TCollection addItem in mainCollection)
                     {
-                        resultCollection.Add(new DiffItem(addItem.Id, addItem.Fullname, DiffType.Add));
+                        resultCollection.Add(new DiffItem(((ISyncItem)addItem).Id, ((ISyncItem)addItem).Fullname, DiffType.Add));
                     }
 
                     return resultCollection;
@@ -58,27 +58,27 @@ namespace DifferenceTwoList
                 }
             }
 
-            IEnumerable<DataItem> mainCollectionOnly = mainCollection.Except(secondCollection, new DataItemComparer<DataItem>());
-            IEnumerable<DataItem> secondCollectionOnly = secondCollection.Except(mainCollection, new DataItemComparer<DataItem>());
-            IEnumerable<DataItem> common = secondCollection.Intersect(mainCollection, new DataItemComparer<DataItem>());
+            IEnumerable<TCollection> mainCollectionOnly = mainCollection.Except(secondCollection, new DataItemComparer<TCollection>());
+            IEnumerable<TCollection> secondCollectionOnly = secondCollection.Except(mainCollection, new DataItemComparer<TCollection>());
+            IEnumerable<TCollection> common = secondCollection.Intersect(mainCollection, new DataItemComparer<TCollection>());
 
-            IEnumerable<DataItem> addedItems = secondCollectionOnly.Except(mainCollectionOnly, new DataItemDataComparer<DataItem>());
-            IEnumerable<DataItem> removedItems = mainCollectionOnly.Except(secondCollectionOnly, new DataItemDataComparer<DataItem>());
-            IEnumerable<DataItem> diffMain = mainCollectionOnly.Intersect(secondCollectionOnly, new DataItemDataComparer<DataItem>());
-            IEnumerable<DataItem> diffSecond = secondCollectionOnly.Intersect(mainCollectionOnly, new DataItemDataComparer<DataItem>());
+            IEnumerable<TCollection> addedItems = secondCollectionOnly.Except(mainCollectionOnly, new DataItemDataComparer<TCollection>());
+            IEnumerable<TCollection> removedItems = mainCollectionOnly.Except(secondCollectionOnly, new DataItemDataComparer<TCollection>());
+            IEnumerable<TCollection> diffMain = mainCollectionOnly.Intersect(secondCollectionOnly, new DataItemDataComparer<TCollection>());
+            IEnumerable<TCollection> diffSecond = secondCollectionOnly.Intersect(mainCollectionOnly, new DataItemDataComparer<TCollection>());
 
-            foreach (DataItem add in addedItems)
+            foreach (TCollection add in addedItems)
             {
-                resultCollection.Add(new DiffItem(add.Id, add.Data, DiffType.Add));
+                resultCollection.Add(new DiffItem(((ISyncItem)add).Id, ((ISyncItem)add).Fullname, DiffType.Add));
             }
-            foreach (DataItem rem in removedItems)
+            foreach (TCollection rem in removedItems)
             {
-                resultCollection.Add(new DiffItem(rem.Id, rem.Data, DiffType.Remove));
+                resultCollection.Add(new DiffItem(((ISyncItem)rem).Id, ((ISyncItem)rem).Fullname, DiffType.Remove));
             }
-            foreach (DataItem pre in diffMain)
+            foreach (TCollection pre in diffMain)
             {
-                DataItem post = diffSecond.First(x => x.Id == pre.Id);
-                resultCollection.Add(new DiffItem(pre.Id, pre.Data, DiffType.Diff));
+                TCollection post = diffSecond.First(x => ((ISyncItem)x).Id == ((ISyncItem)pre).Id);
+                resultCollection.Add(new DiffItem(((ISyncItem)pre).Id, ((ISyncItem)pre).Fullname, DiffType.Diff));
             }
 
             return resultCollection;
