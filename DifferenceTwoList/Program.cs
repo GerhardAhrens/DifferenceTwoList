@@ -1,6 +1,4 @@
-﻿//https://codereview.stackexchange.com/questions/169516/comparing-two-lists-of-class-objects-similar-to-a-diff-tool
-
-namespace DifferenceTwoList
+﻿namespace DifferenceTwoList
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +6,8 @@ namespace DifferenceTwoList
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Threading.Tasks;
+
+    using DifferenceTwoListLib;
 
     public class Program
     {
@@ -29,17 +28,17 @@ namespace DifferenceTwoList
             secondCollection.Add(new DataItem() { Id = new Guid("{8CC57D56-5210-4A4E-B514-045FA0969A97}"), Data = "Esel", Value = "9" });
             secondCollection.Add(new DataItem() { Id = new Guid("{E4AEA1FB-DE37-448A-9E5F-8591D1B3D175}"), Data = "Bär", Value = "3" });
 
-            List<DiffItem> diffList = GetDifferenceResult<DataItem>(mainCollection, secondCollection);
+            List<DifferenceResultItem> diffList = GetDifferenceResult<DataItem>(mainCollection, secondCollection);
         }
 
-        private static List<DiffItem> GetDifferenceResult<TCollection>(IEnumerable<TCollection> mainCollection, IEnumerable<TCollection> secondCollection)
+        private static List<DifferenceResultItem> GetDifferenceResult<TCollection>(IEnumerable<TCollection> mainCollection, IEnumerable<TCollection> secondCollection)
         {
             if (mainCollection == null)
             {
                 throw new NullReferenceException($"Die Collection '{nameof(mainCollection)}' darf nicht null sein.");
             }
 
-            List<DiffItem>  resultCollection = new List<DiffItem>();
+            List<DifferenceResultItem>  resultCollection = new List<DifferenceResultItem>();
 
             if (secondCollection == null || secondCollection.Count() == 0)
             {
@@ -47,7 +46,7 @@ namespace DifferenceTwoList
                 {
                     foreach (TCollection addItem in mainCollection)
                     {
-                        resultCollection.Add(new DiffItem(((ISyncItem)addItem).Id, ((ISyncItem)addItem).Fullname, DiffType.Add));
+                        resultCollection.Add(new DifferenceResultItem(((ISyncItem)addItem).Id, ((ISyncItem)addItem).Fullname, DifferenceItemType.Add));
                     }
 
                     return resultCollection;
@@ -69,29 +68,20 @@ namespace DifferenceTwoList
 
             foreach (TCollection add in addedItems)
             {
-                resultCollection.Add(new DiffItem(((ISyncItem)add).Id, ((ISyncItem)add).Fullname, DiffType.Add));
+                resultCollection.Add(new DifferenceResultItem(((ISyncItem)add).Id, ((ISyncItem)add).Fullname, DifferenceItemType.Add));
             }
             foreach (TCollection rem in removedItems)
             {
-                resultCollection.Add(new DiffItem(((ISyncItem)rem).Id, ((ISyncItem)rem).Fullname, DiffType.Remove));
+                resultCollection.Add(new DifferenceResultItem(((ISyncItem)rem).Id, ((ISyncItem)rem).Fullname, DifferenceItemType.Remove));
             }
             foreach (TCollection pre in diffMain)
             {
                 TCollection post = diffSecond.First(x => ((ISyncItem)x).Id == ((ISyncItem)pre).Id);
-                resultCollection.Add(new DiffItem(((ISyncItem)pre).Id, ((ISyncItem)pre).Fullname, DiffType.Diff));
+                resultCollection.Add(new DifferenceResultItem(((ISyncItem)pre).Id, ((ISyncItem)pre).Fullname, DifferenceItemType.Diff));
             }
 
             return resultCollection;
         }
-    }
-
-    public interface ISyncItem
-    {
-        Guid Id { get; set; }
-
-        string Hash { get;}
-
-        string Fullname { get; }
     }
 
     [DebuggerDisplay("Data={this.Data};Value={this.Value}")]
@@ -138,57 +128,5 @@ namespace DifferenceTwoList
 
             return sb.ToString();
         }
-    }
-
-    [DebuggerDisplay("Data={this.Data};DiffType={this.DiffType}")]
-    public class DiffItem
-    {
-        public DiffItem() { }
-
-        public DiffItem(Guid id, string fullname, DiffType type)
-        {
-            this.Id = id;
-            this.Data = fullname;
-            this.DiffType = type;
-        }
-
-        public Guid Id { get; private set; }
-
-        public string Data { get; set; }
-
-        public DiffType DiffType { get; set; } // DiffType = Add/Remove/Diff
-    }
-
-    public class DataItemComparer<TCollection> : IEqualityComparer<TCollection>
-    {
-        public bool Equals(TCollection x, TCollection y)
-        {
-            return (string.Equals(((ISyncItem)x).Hash, ((ISyncItem)y).Hash));
-        }
-
-        public int GetHashCode(TCollection obj)
-        {
-            return ((ISyncItem)obj).Id.GetHashCode();
-        }
-    }
-
-    public class DataItemDataComparer<TCollection> : IEqualityComparer<TCollection>
-    {
-        public bool Equals(TCollection x, TCollection y)
-        {
-            return string.Equals(((ISyncItem)x).Id, ((ISyncItem)y).Id);
-        }
-
-        public int GetHashCode(TCollection obj)
-        {
-            return ((ISyncItem)obj).Id.GetHashCode();
-        }
-    }
-
-    public enum DiffType
-    {
-        Add,
-        Remove,
-        Diff
     }
 }
