@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -28,105 +27,13 @@
             secondCollection.Add(new DataItem() { Id = new Guid("{8CC57D56-5210-4A4E-B514-045FA0969A97}"), Data = "Esel", Value = "9" });
             secondCollection.Add(new DataItem() { Id = new Guid("{E4AEA1FB-DE37-448A-9E5F-8591D1B3D175}"), Data = "Bär", Value = "3" });
 
-            List<DifferenceResultItem> diffList = GetDifferenceResult<DataItem>(mainCollection, secondCollection);
-        }
-
-        private static List<DifferenceResultItem> GetDifferenceResult<TCollection>(IEnumerable<TCollection> mainCollection, IEnumerable<TCollection> secondCollection)
-        {
-            if (mainCollection == null)
+            List<DifferenceResultItem> diffCollection = DifferenceCollection.Result<DataItem>(mainCollection, secondCollection);
+            foreach (DifferenceResultItem item in diffCollection)
             {
-                throw new NullReferenceException($"Die Collection '{nameof(mainCollection)}' darf nicht null sein.");
+                Console.WriteLine($"{item.DiffType}; {item.Data}");
             }
 
-            List<DifferenceResultItem>  resultCollection = new List<DifferenceResultItem>();
-
-            if (secondCollection == null || secondCollection.Count() == 0)
-            {
-                if (mainCollection != null || mainCollection.Count() != 0)
-                {
-                    foreach (TCollection addItem in mainCollection)
-                    {
-                        resultCollection.Add(new DifferenceResultItem(((ISyncItem)addItem).Id, ((ISyncItem)addItem).Fullname, DifferenceItemType.Add));
-                    }
-
-                    return resultCollection;
-                }
-                else
-                {
-                    return resultCollection;
-                }
-            }
-
-            IEnumerable<TCollection> mainCollectionOnly = mainCollection.Except(secondCollection, new DataItemComparer<TCollection>());
-            IEnumerable<TCollection> secondCollectionOnly = secondCollection.Except(mainCollection, new DataItemComparer<TCollection>());
-            IEnumerable<TCollection> common = secondCollection.Intersect(mainCollection, new DataItemComparer<TCollection>());
-
-            IEnumerable<TCollection> addedItems = secondCollectionOnly.Except(mainCollectionOnly, new DataItemDataComparer<TCollection>());
-            IEnumerable<TCollection> removedItems = mainCollectionOnly.Except(secondCollectionOnly, new DataItemDataComparer<TCollection>());
-            IEnumerable<TCollection> diffMain = mainCollectionOnly.Intersect(secondCollectionOnly, new DataItemDataComparer<TCollection>());
-            IEnumerable<TCollection> diffSecond = secondCollectionOnly.Intersect(mainCollectionOnly, new DataItemDataComparer<TCollection>());
-
-            foreach (TCollection add in addedItems)
-            {
-                resultCollection.Add(new DifferenceResultItem(((ISyncItem)add).Id, ((ISyncItem)add).Fullname, DifferenceItemType.Add));
-            }
-            foreach (TCollection rem in removedItems)
-            {
-                resultCollection.Add(new DifferenceResultItem(((ISyncItem)rem).Id, ((ISyncItem)rem).Fullname, DifferenceItemType.Remove));
-            }
-            foreach (TCollection pre in diffMain)
-            {
-                TCollection post = diffSecond.First(x => ((ISyncItem)x).Id == ((ISyncItem)pre).Id);
-                resultCollection.Add(new DifferenceResultItem(((ISyncItem)pre).Id, ((ISyncItem)pre).Fullname, DifferenceItemType.Diff));
-            }
-
-            return resultCollection;
-        }
-    }
-
-    [DebuggerDisplay("Data={this.Data};Value={this.Value}")]
-    public class DataItem : ISyncItem
-    {
-        public DataItem()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        public DataItem(Guid id, string d, string v)
-        {
-            this.Id = id;
-            this.Data = d;
-            this.Value = v; 
-        }
-
-        public Guid Id { get; set; }
-
-        public string Fullname { get { return $"{this.Data}|{this.Value}"; } }
-
-        public string Hash { get { return this.ToMD5(this.Fullname); } }
-
-        public string Data { get; set; }
-
-        public string Value { get; set; }
-
-        private string ToMD5(string @this, bool isUpperOrLower = false)
-        {
-            byte[] bytes = (new MD5CryptoServiceProvider()).ComputeHash(Encoding.UTF8.GetBytes(@this));
-
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in bytes)
-            {
-                if (isUpperOrLower == false)
-                {
-                    sb.Append(b.ToString("x2").ToLower());
-                }
-                else
-                {
-                    sb.Append(b.ToString("x2").ToUpper());
-                }
-            }
-
-            return sb.ToString();
+            Console.ReadKey();
         }
     }
 }

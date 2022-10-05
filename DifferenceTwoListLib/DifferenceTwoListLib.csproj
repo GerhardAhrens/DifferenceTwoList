@@ -41,15 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\DataItemComparer.cs" />
-    <Compile Include="Core\DataItemDataComparer.cs" />
+    <Compile Include="Core\CollectionItemComparer.cs" />
+    <Compile Include="Core\CollectionItemIdComparer.cs" />
+    <Compile Include="Core\DifferenceFromCollection.cs" />
     <Compile Include="Core\DifferenceItemType.cs" />
     <Compile Include="Core\DifferenceResultItem.cs" />
     <Compile Include="Core\ISyncItem.cs" />
+    <Compile Include="Extension\HashExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extension\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

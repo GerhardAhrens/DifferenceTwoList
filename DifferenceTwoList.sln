@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifferenceTwoList", "Differ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifferenceTwoListLib", "DifferenceTwoListLib\DifferenceTwoListLib.csproj", "{AB9DBF42-94FC-46BF-B0AC-BEF9BD33F695}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifferenceTwoList_Test", "DifferenceTwoList_Test\DifferenceTwoList_Test.csproj", "{A41B3A82-68F7-4BF6-A97A-420E66111D7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AB9DBF42-94FC-46BF-B0AC-BEF9BD33F695}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB9DBF42-94FC-46BF-B0AC-BEF9BD33F695}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB9DBF42-94FC-46BF-B0AC-BEF9BD33F695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A41B3A82-68F7-4BF6-A97A-420E66111D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A41B3A82-68F7-4BF6-A97A-420E66111D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A41B3A82-68F7-4BF6-A97A-420E66111D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A41B3A82-68F7-4BF6-A97A-420E66111D7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
