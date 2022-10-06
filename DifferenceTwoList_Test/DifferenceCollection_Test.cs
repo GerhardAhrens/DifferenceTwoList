@@ -83,7 +83,6 @@ namespace DifferenceTwoList_Test
 
             IEnumerable<DifferenceResultItem> diffCollection = DifferenceCollection.Result<DataItem>(mainCollection, secondCollection);
 
-
             Assert.IsFalse(diffCollection == null);
             Assert.IsTrue(diffCollection.Count() == 5);
             Assert.IsTrue(diffCollection.Count(c => c.DiffType == DifferenceItemType.Add) == 1);

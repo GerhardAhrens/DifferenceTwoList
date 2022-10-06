@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Doc", "_Doc", "{1671D82E-C
 		DifferenceCollection.png = DifferenceCollection.png
 		DifferenceCollection.svg = DifferenceCollection.svg
 		README.md = README.md
+		Source_1.png = Source_1.png
+		Source_2.png = Source_2.png
 	EndProjectSection
 EndProject
 Global
