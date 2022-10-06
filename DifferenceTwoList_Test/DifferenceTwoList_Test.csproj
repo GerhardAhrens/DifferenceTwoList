@@ -51,9 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlTyp.cs" />
     <Compile Include="DataItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DifferenceCollection_Test.cs" />
+    <Compile Include="TestA.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
