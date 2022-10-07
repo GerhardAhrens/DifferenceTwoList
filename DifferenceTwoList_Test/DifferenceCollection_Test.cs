@@ -1,15 +1,15 @@
 //-----------------------------------------------------------------------
-// <copyright file="UnitTestClass1.cs" company="www.pta.de">
-//     Class: UnitTestClass1
-//     Copyright © www.pta.de 2022
+// <copyright file="DifferenceCollection_Test.cs" company="Lifeprojects.de">
+//     Class: DifferenceCollection_Test
+//     Copyright © Lifeprojects.de 2022
 // </copyright>
 //
-// <author>Gerhard Ahrens - www.pta.de</author>
-// <email>gerhard.ahrens@pta.de</email>
-// <date>05.10.2022 14:43:48</date>
+// <author>Gerhard Ahrens - Lifeprojects.de</author>
+// <email>gerhard.ahrens@lifeprojects.de</email>
+// <date>24.04.2022</date>
 //
 // <summary>
-// Klasse für 
+// Enum Klasse 
 // </summary>
 //-----------------------------------------------------------------------
 

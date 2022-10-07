@@ -9,7 +9,7 @@
 // <date>24.04.2022</date>
 //
 // <summary>
-// Enum Klasse für Dialog Controls (Ein- oder Ausblenden)
+// Enum Klasse 
 // </summary>
 //-----------------------------------------------------------------------
 
