@@ -5,8 +5,8 @@
  * </copyright>
  *
  * <author>Gerhard Ahrens - Lifeprojects.de</author>
- * <email>developer@lifeprojects.de</email>
- * <date>05.10.2022</date>
+ * <email>gerhard.ahrens@lifeprojects.de</email>
+ * <date>07.10.2022</date>
  * <Project>DifferenceTwoListLib</Project>
  *
  * <summary>
@@ -24,10 +24,19 @@
 
 namespace DifferenceTwoListLib
 {
+    using System.ComponentModel;
+
+    /// <summary>
+    /// Art der möglichen Differenzen
+    /// </summary>
     public enum DifferenceItemType
     {
-        Add,
-        Remove,
-        Change
+        None = 0,
+        [Description("Neuer Eintrag")]
+        Add =1,
+        [Description("Entfernter Eintrag")]
+        Remove = 2,
+        [Description("Geänderter Eintrag")]
+        Change = 3
     }
 }

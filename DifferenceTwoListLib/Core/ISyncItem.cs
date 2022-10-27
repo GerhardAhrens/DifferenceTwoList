@@ -1,16 +1,16 @@
 ﻿/*
- * <copyright file="DifferenceResultItem.cs" company="Lifeprojects.de">
- *     Class: DifferenceResultItem
+ * <copyright file="ISyncItem.cs" company="Lifeprojects.de">
+ *     Class: ISyncItem
  *     Copyright © Lifeprojects.de 2022
  * </copyright>
  *
  * <author>Gerhard Ahrens - Lifeprojects.de</author>
- * <email>developer@lifeprojects.de</email>
- * <date>05.10.2022</date>
+ * <email>gerhard.ahrens@lifeprojects.de</email>
+ * <date>07.10.2022</date>
  * <Project>DifferenceTwoListLib</Project>
  *
  * <summary>
- * Interface Klasse für
+ * Die Interface Klasse zur Implementierung für Collection Typen 
  * </summary>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,19 @@ namespace DifferenceTwoListLib
 
     public interface ISyncItem
     {
+        /// <summary>
+        /// Id des Item
+        /// </summary>
         Guid Id { get; set; }
 
+        /// <summary>
+        /// Ermittelter MD5-Hash
+        /// </summary>
         string Hash { get;}
 
+        /// <summary>
+        /// Ersteller Name aus ausgewählten Properties
+        /// </summary>
         string Fullname { get; }
     }
 }

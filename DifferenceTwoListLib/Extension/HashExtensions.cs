@@ -5,12 +5,12 @@
  * </copyright>
  *
  * <author>Gerhard Ahrens - Lifeprojects.de</author>
- * <email>developer@lifeprojects.de</email>
- * <date>05.10.2022</date>
+ * <email>gerhard.ahrens@lifeprojects.de</email>
+ * <date>07.10.2022</date>
  * <Project>DifferenceTwoListLib</Project>
  *
  * <summary>
- * Extension Class
+ * Extension Klasse für den tp String
  * </summary>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,12 @@ namespace System
 
     public static class HashExtensions
     {
+        /// <summary>
+        /// Gibt den Hash eines String als MD5-Hash zurück
+        /// </summary>
+        /// <param name="this">String von der MD5 Hash ermittelt werden soll</param>
+        /// <param name="isUpperOrLower">True, MD5-Hash wird in Großbuchstanben zurückgegeben</param>
+        /// <returns>MD5-Hash</returns>
         public static string ToMD5(this string @this, bool isUpperOrLower = false)
         {
             byte[] bytes = (new MD5CryptoServiceProvider()).ComputeHash(Encoding.UTF8.GetBytes(@this));

@@ -5,12 +5,12 @@
  * </copyright>
  *
  * <author>Gerhard Ahrens - Lifeprojects.de</author>
- * <email>developer@lifeprojects.de</email>
- * <date>05.10.2022</date>
+ * <email>gerhard.ahrens@lifeprojects.de</email>
+ * <date>07.10.2022</date>
  * <Project>DifferenceTwoListLib</Project>
  *
  * <summary>
- * Klasse zur Ermittlung von Difference zwischen zwei Collection
+ * Die Klasse ermittelt zwischen 2 Collection die Unterschiede und gibt diese als Liste zurück.
  * </summary>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,6 +31,9 @@ namespace DifferenceTwoListLib
     using System.Text;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Die Klasse ermittelt zwischen 2 Collection die Unterschiede und gibt diese als Liste zurück.
+    /// </summary>
     public static class DifferenceCollection
     {
         /// <summary>
@@ -40,6 +43,14 @@ namespace DifferenceTwoListLib
         {
         }
 
+        /// <summary>
+        /// Unterschiede zwischen zwei Collektion ermitteln
+        /// </summary>
+        /// <typeparam name="TCollection">Typ der übergeben Collections</typeparam>
+        /// <param name="mainCollection">Main Collection</param>
+        /// <param name="secondCollection">Second Collection</param>
+        /// <returns>Liste mit Unterschieden, ist die zweite Liste leer oder null, so werden alle Einträge als neue Einträge der 'Main Collection' zurückgegeben.</returns>
+        /// <exception cref="NullReferenceException"></exception>
         public static List<DifferenceResultItem> Result<TCollection>(IEnumerable<TCollection> mainCollection, IEnumerable<TCollection> secondCollection)
         {
             if (mainCollection == null)

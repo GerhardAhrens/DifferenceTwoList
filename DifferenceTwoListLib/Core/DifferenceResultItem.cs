@@ -5,12 +5,12 @@
  * </copyright>
  *
  * <author>Gerhard Ahrens - Lifeprojects.de</author>
- * <email>developer@lifeprojects.de</email>
- * <date>05.10.2022</date>
+ * <email>gerhard.ahrens@lifeprojects.de</email>
+ * <date>07.10.2022</date>
  * <Project>DifferenceTwoListLib</Project>
  *
  * <summary>
- * Klasse für
+ * Die Klasse gibt als Typ einer Collection die ermittelte Unterschiede zurück
  * </summary>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,9 @@ namespace DifferenceTwoListLib
     using System;
     using System.Diagnostics;
 
+    /// <summary>
+    /// Die Klasse gibt als Typ einer Collection die ermittelte Unterschiede zurück
+    /// </summary>
     [DebuggerDisplay("Data={this.Data};DiffType={this.DiffType}")]
     public sealed class DifferenceResultItem
     {
@@ -39,10 +42,19 @@ namespace DifferenceTwoListLib
             this.DiffType = type;
         }
 
+        /// <summary>
+        /// Id des Item bei dem die Different ermittelt wurde
+        /// </summary>
         public Guid Id { get; private set; }
 
+        /// <summary>
+        /// Daten, z.B. verschiedene Properties als String
+        /// </summary>
         public string Data { get; set; }
 
+        /// <summary>
+        /// Art der Differenz, Add, Remove, Change
+        /// </summary>
         public DifferenceItemType DiffType { get; set; }
     }
 }
