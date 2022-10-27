@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="Core\CollectionItemComparer.cs" />
     <Compile Include="Core\CollectionItemIdComparer.cs" />
-    <Compile Include="Core\DifferenceFromCollection.cs" />
+    <Compile Include="Core\DifferenceCollection.cs" />
     <Compile Include="Core\DifferenceItemType.cs" />
     <Compile Include="Core\DifferenceResultItem.cs" />
     <Compile Include="Core\ISyncItem.cs" />
