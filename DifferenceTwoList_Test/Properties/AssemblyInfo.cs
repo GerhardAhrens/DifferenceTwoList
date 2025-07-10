@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DifferenceTwoList_Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("PTA GmbH")]
+[assembly: AssemblyCompany("Lifeprojects.de")]
 [assembly: AssemblyProduct("DifferenceTwoList_Test")]
-[assembly: AssemblyCopyright("Copyright © PTA GmbH 2022")]
+[assembly: AssemblyCopyright("Copyright © Lifeprojects.de 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

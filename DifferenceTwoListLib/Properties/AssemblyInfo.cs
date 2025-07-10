@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DifferenceTwoListLib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("PTA GmbH")]
+[assembly: AssemblyCompany("Lifeprojects.de")]
 [assembly: AssemblyProduct("DifferenceTwoListLib")]
-[assembly: AssemblyCopyright("Copyright © PTA GmbH 2022")]
+[assembly: AssemblyCopyright("Copyright © Lifeprojects.de 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
